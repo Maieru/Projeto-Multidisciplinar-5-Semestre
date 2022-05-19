@@ -14,25 +14,33 @@ namespace MongoReader
 {
     internal class Program
     {
-        /*use HelixDatabase
-
-          db.sensores.insert({ data: "17/05/2022", valorAgua: 10, valorNivel: 20, idDispositivo: 1 })
-          db.sensores.insert({ data: "15/05/2022", valorAgua: 15, valorNivel: 28, idDispositivo: 1 })
-         */
         static void Main(string[] args)
         {
+            List<DispositivoViewModel> listaDispositivoCache = null;
+            DateTime ultimaAtualizacaoDaLista = DateTime.Now;
+
             while (true)
             {
                 try
                 {
-                    var ultimasMedicoes = MongoDAO.GetMedicoesUltimoMinuto();
-                    var medicaoDAO = new MedicaoDAO();
-
-                    foreach(var medicaoMongo in ultimasMedicoes)
+                    if (listaDispositivoCache == null || DateTime.Now.Subtract(ultimaAtualizacaoDaLista).Minutes > 5)
                     {
-                        var medicaoViewModel = MedicaoMongoToMedicaoViewModel(medicaoMongo);
+                        var dispositivoDAO = new DispositivoDAO();
+                        listaDispositivoCache = dispositivoDAO.List();
+                        ultimaAtualizacaoDaLista = DateTime.Now;
+                    }
 
-                        medicaoDAO.Insert(medicaoViewModel);
+                    foreach(var dispositivo in listaDispositivoCache)
+                    {
+                        var ultimasMedicoes = MongoDAO.GetMedicoesUltimoMinuto(dispositivo.Id);
+                        var medicaoDAO = new MedicaoDAO();
+
+                        foreach (var medicaoMongo in ultimasMedicoes)
+                        {
+                            var medicaoViewModel = MedicaoMongoToMedicaoViewModel(medicaoMongo, dispositivo.Id);
+
+                            medicaoDAO.Insert(medicaoViewModel);
+                        }
                     }
                 }
                 catch (Exception erro)
@@ -44,15 +52,19 @@ namespace MongoReader
             }
         }
 
-        static MedicaoViewModel MedicaoMongoToMedicaoViewModel(MedicaoMongoObject medicaoMongo)
+        static MedicaoViewModel MedicaoMongoToMedicaoViewModel(MedicaoMongoObject medicaoMongo, int idDispositivo)
         {
-            return new MedicaoViewModel
-            {
-                DataMedicao = DateTime.ParseExact(medicaoMongo.data, "dd/MM/yyyyTHH:mm:ss", CultureInfo.InvariantCulture),
-                DispositivoId = Convert.ToInt32(medicaoMongo.idDispositivo),
-                ValorChuva = Convert.ToDouble(medicaoMongo.valorAgua),
-                ValorNivel = Convert.ToDouble(medicaoMongo.valorNivel)
-            };
+            var retorno = new MedicaoViewModel();
+
+            retorno.DispositivoId = idDispositivo;
+            retorno.DataMedicao = medicaoMongo.recvTime;
+
+            if (medicaoMongo.attrName == "ValorNivel")
+                retorno.ValorNivel = Convert.ToDouble(medicaoMongo.attrValue);
+            else if (medicaoMongo.attrName == "ValorChuva")
+                retorno.ValorChuva = Convert.ToDouble(medicaoMongo.attrValue);
+
+            return retorno;
         }
     }
 }
