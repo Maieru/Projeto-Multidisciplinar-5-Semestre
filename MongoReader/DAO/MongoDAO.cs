@@ -10,30 +10,31 @@ namespace MongoReader.DAO
     public class MedicaoMongoObject
     {
         public ObjectId _id { get; set; }
-        public double idDispositivo { get; set; }
-        public string data { get; set; }
-        public double valorAgua { get; set; }
-        public double valorNivel { get; set; }
+        public DateTime recvTime { get; set; }
+        public string attrName { get; set; }
+        public string attrType { get; set; }
+        public string attrValue { get; set; }
     }
 
     public static class MongoDAO
     {
-        private static IMongoCollection<BsonDocument> GetTabelaSensores()
+        private static IMongoCollection<BsonDocument> GetTabelaDispositivo(int idDispositivo)
         {
+            //mongodb://helix:H3l1xNG@{IP}:27000/?authMechanism=DEFAULT
             string connectionString = "mongodb://127.0.0.1:27017";
             var client = new MongoClient(connectionString);
-            var banco = client.GetDatabase("HelixDatabase");
-            return banco.GetCollection<BsonDocument>("sensores");
+            var banco = client.GetDatabase("sth_helixiot");
+            return banco.GetCollection<BsonDocument>($"sth_/_urn:ngsi-Id:Station:{idDispositivo:000}_Station");
         }
 
-        public static List<MedicaoMongoObject> GetMedicoesUltimoMinuto()
+        public static List<MedicaoMongoObject> GetMedicoesUltimoMinuto(int idDispositivo)
         {
-            var tabela = GetTabelaSensores();
+            var tabela = GetTabelaDispositivo(idDispositivo);
 
             // Alterar o .ToString para o formato gerado no Helix 
-            string horarioUltimoMinutoFormatado = DateTime.Now.AddMinutes(-1).ToString("dd/MM/yyyyTHH:mm:ss");
+            string horarioUltimoMinutoFormatado = DateTime.Now.AddMinutes(-1).ToString("yyyy-MM-ddTHH:mm:ss.fffzzz");
 
-            var filtro = Builders<BsonDocument>.Filter.Gte("data", horarioUltimoMinutoFormatado);
+            var filtro = Builders<BsonDocument>.Filter.Gte("recvTime", horarioUltimoMinutoFormatado);
 
             var registros = tabela.Find(filtro);
 
