@@ -9,6 +9,8 @@
     top: 45px;
     height: auto;
     overflow-y: auto;
+    margin-bottom: 40px;
+    z-index: 9999;
 }
 
 html {
@@ -308,4 +310,14 @@ body > div {
 
 body > div > main{
     grid-row: 2;
+}
+
+img.logo {
+    border: 10px black;
+    width: 500px;
+    margin-left: 20%;
+    height: 100px;
+    display: block;
+    z-index: 999;
+    margin-bottom: 100px
 }
