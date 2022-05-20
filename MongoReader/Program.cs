@@ -39,7 +39,8 @@ namespace MongoReader
                         {
                             var medicaoViewModel = MedicaoMongoToMedicaoViewModel(medicaoMongo, dispositivo.Id);
 
-                            medicaoDAO.Insert(medicaoViewModel);
+                            if (medicaoViewModel.ValorChuva != null || medicaoViewModel.ValorNivel != null)
+                                medicaoDAO.Insert(medicaoViewModel);
                         }
                     }
                 }

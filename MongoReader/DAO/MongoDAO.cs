@@ -20,11 +20,10 @@ namespace MongoReader.DAO
     {
         private static IMongoCollection<BsonDocument> GetTabelaDispositivo(int idDispositivo)
         {
-            //mongodb://helix:H3l1xNG@{IP}:27000/?authMechanism=DEFAULT
-            string connectionString = "mongodb://127.0.0.1:27017";
+            string connectionString = "mongodb://helix:H3l1xNG@" + INSIRA_IP + ":27000/?authSource=admin";
             var client = new MongoClient(connectionString);
             var banco = client.GetDatabase("sth_helixiot");
-            return banco.GetCollection<BsonDocument>($"sth_/_urn:ngsi-Id:Station:{idDispositivo:000}_Station");
+            return banco.GetCollection<BsonDocument>($"sth_/_urn:ngsi-ld:Station:{idDispositivo:000}_Station");
         }
 
         public static List<MedicaoMongoObject> GetMedicoesUltimoMinuto(int idDispositivo)
@@ -32,7 +31,7 @@ namespace MongoReader.DAO
             var tabela = GetTabelaDispositivo(idDispositivo);
 
             // Alterar o .ToString para o formato gerado no Helix 
-            string horarioUltimoMinutoFormatado = DateTime.Now.AddMinutes(-1).ToString("yyyy-MM-ddTHH:mm:ss.fffzzz");
+            var horarioUltimoMinutoFormatado = DateTime.Now.AddMinutes(-1);
 
             var filtro = Builders<BsonDocument>.Filter.Gte("recvTime", horarioUltimoMinutoFormatado);
 
