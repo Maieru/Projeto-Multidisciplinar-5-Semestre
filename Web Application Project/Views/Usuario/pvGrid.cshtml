@@ -1,0 +1,39 @@
+﻿@model List<UsuarioViewModel>
+
+<table class="table table-responsive table-sm psd-table">
+    <thead>
+        <tr>
+            <th>
+                Ações
+            </th>
+            <th>
+                Código
+            </th>
+            <th>
+                Nome Usuário
+            </th>
+            <th>
+                Tipo de Usuário
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var usuario in Model)
+        {
+            <tr>
+                <td>
+                    <a href="Usuario/Edit?id=@usuario.Id" class="btn psd-button psd-button-info">Editar</a>
+                </td>
+                <td>
+                    @usuario.Id
+                </td>
+                <td>
+                    @usuario.Nome
+                </td>
+                <td>
+                    @usuario.TipoUsuario.ToString()
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

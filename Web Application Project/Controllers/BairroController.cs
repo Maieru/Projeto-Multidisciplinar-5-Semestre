@@ -41,7 +41,7 @@ namespace Web_Application.Controllers
                 return View("Error", new ErrorViewModel(erro.ToString()));
             }
         }
-        /*
+
         [HttpGet("api/GetLatLong")]
         public async Task<IActionResult> GetLatLong(string CEP)
         {
@@ -70,8 +70,8 @@ namespace Web_Application.Controllers
 
                         return Json(new
                         {
-                            Latitude = (string)resposta["results"][0]["geometry"]["location"]["lat"],
-                            Longitude = (string)resposta["results"][0]["geometry"]["location"]["lng"]
+                            Latitude = (string)resposta["results"][0]["geometry"]["location"]["lat"].ToString().Replace('.', ','),
+                            Longitude = (string)resposta["results"][0]["geometry"]["location"]["lng"].ToString().Replace('.', ',')
                         });
                     }
                     else
@@ -86,6 +86,6 @@ namespace Web_Application.Controllers
 
                 return null;
             }
-        }*/
+        }
     }
 }

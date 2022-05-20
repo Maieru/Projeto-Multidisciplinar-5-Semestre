@@ -1,0 +1,63 @@
+﻿@model SubscriberAlertaViewModel
+
+@{
+    var operacao = ViewBag.Operacao as string;
+    var listaDeBairros = ViewBag.ListaBairros as List<BairroViewModel>;
+}
+
+<form asp-action="Save">
+    <input name="Operacao" value="@operacao" hidden />
+
+    <div class="row">
+        <div class="col-md-5">
+            @if (ViewBag.Operacao == "A")
+            {
+                <div class="row">
+                    <label for="Id" class="control-label">Id</label>
+                    <input class="psd-input disabled" type="number" asp-for="Id" readonly />
+                    <span asp-validation-for="Id" class="text-danger"></span>
+                </div>
+                <br />
+            }
+            else
+            {
+                <input class="psd-input" type="number" asp-for="Id" hidden />
+            }
+            <div class="row">
+                <label for="BairroId" class="control-label">Bairro: </label>
+                <select asp-for="BairroId">
+                    @foreach (var bairro in listaDeBairros)
+                    {
+                        <option value="@bairro.Id">@bairro.Descricao</option>
+                    }
+                </select>
+                <span asp-validation-for="BairroId" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-5">
+                    <button type="submit" class="btn psd-button psd-button-success">Salvar</button>
+                </div>
+                <div class="col-md-5">
+                    <button onclick="javascript:ReturnPage()" type="button" class="btn psd-button psd-button-danger">Sair</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5 offset-2">
+            <div class="row">
+                <label for="Telefone" class="control-label">Telefone: </label>
+                <input class="psd-input" asp-for="Telefone"/>
+                <span asp-validation-for="Telefone" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="row">
+                <label for="Email" class="control-label">Email: </label>
+                <input class="psd-input" asp-for="Email" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <br />
+        </div>
+    </div>
+</form>
+
+<script src="~/js/editBairro.js"></script>

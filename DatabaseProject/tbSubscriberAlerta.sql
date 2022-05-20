@@ -5,5 +5,7 @@
 						FOREIGN KEY REFERENCES tbBairros NOT NULL,
 	Telefone		VARCHAR(100)	NULL,
 	Email			VARCHAR(200)	NULL,
-	FormaDeAlerta	INT				NOT NULL
+	UsuarioId		INT
+					CONSTRAINT FK_Usuario_Subscriber 
+						FOREIGN KEY REFERENCES tbUsuario NOT NULL,
 )

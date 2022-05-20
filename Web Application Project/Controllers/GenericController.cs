@@ -22,6 +22,7 @@ namespace Web_Application.Controllers
         protected abstract void SetAutenticationRequirements();
         protected abstract void SetIdGenerationConfig();
 
+        protected UsuarioViewModel UsuarioLogado { get; set; }
         protected GenericDAO<T> DAO { get; set; }
         protected bool GeraProximoId { get; set; }
         protected bool AutenticationRequired { get; set; } = true;
@@ -165,7 +166,10 @@ namespace Web_Application.Controllers
                 var usuarioEmCache = SessionService.RecuperaCache<UsuarioViewModel>(context.HttpContext, ConstantesComuns.USUARIO_SESSAO);
 
                 if (usuarioEmCache != null)
+                {
                     ViewBag.Usuario = usuarioEmCache;
+                    UsuarioLogado = usuarioEmCache;
+                }
 
                 if (AutenticationRequired)
                 {

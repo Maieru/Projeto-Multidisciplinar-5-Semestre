@@ -21,7 +21,15 @@ namespace Web_Application.Controllers
         }
         protected override void SetIdGenerationConfig() => GeraProximoId = false;
 
-        public override IActionResult Index() => RedirectToAction("Index", "Login");
+        public override IActionResult Index()
+        {
+            if (UsuarioLogado == null)
+                return RedirectToAction("Index", "Login");
+            else if (UsuarioLogado.TipoUsuario >= EnumTipoUsuario.Administrador)
+                return base.Index();
+            else
+                return View("Unauthorized");
+        }
 
         public override IActionResult Save(UsuarioViewModel model, string operacao)
         {
