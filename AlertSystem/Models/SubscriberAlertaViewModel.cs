@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Web_Application.Attributes;
-using Web_Application.Enum;
+using AlertSystem.Attributes;
+using AlertSystem.Enum;
 
-namespace Web_Application.Models
+namespace AlertSystem.Models
 {
     public class SubscriberAlertaViewModel : BaseDatabaseModel
     {

@@ -1,16 +1,17 @@
 ﻿CREATE PROCEDURE spInsertSubscriberAlerta
-	@Id				INT, 
-	@BairroId		INT,
-	@Telefone		VARCHAR(100),
-	@Email			VARCHAR(200),
-	@UsuarioId		INT
+	@Id					INT, 
+	@BairroId			INT,
+	@Telefone			VARCHAR(100),
+	@Email				VARCHAR(200),
+	@UsuarioId			INT,
+	@UltimaNotificacao	INT
 AS
 BEGIN
 	IF NOT EXISTS (SELECT * FROM tbBairros WHERE Id = @BairroId)
 		RAISERROR ( 'O bairro informado não existe.', 16, 1)
 
-	INSERT INTO tbSubscriberAlerta (Id, BairroId, Telefone, Email, UsuarioId)
-						    VALUES (@Id, @BairroId, @Telefone, @Email, @UsuarioId)
+	INSERT INTO tbSubscriberAlerta (Id, BairroId, Telefone, Email, UsuarioId, UltimaNotificacao)
+						    VALUES (@Id, @BairroId, @Telefone, @Email, @UsuarioId, NULL)
 
 	RETURN 0
 END
@@ -21,7 +22,8 @@ CREATE PROCEDURE spUpdateSubscriberAlerta
 	@BairroId		INT,
 	@Telefone		VARCHAR(100),
 	@Email			VARCHAR(200),
-	@UsuarioId		INT
+	@UsuarioId		INT,
+	@UltimaNotificacao	INT
 AS
 BEGIN
 	IF NOT EXISTS (SELECT * FROM tbBairros WHERE Id = @BairroId)
@@ -31,7 +33,8 @@ BEGIN
 	SET BairroId = @BairroId,
 		Telefone = @Telefone,
 		Email = @Email,
-		UsuarioId = @UsuarioId
+		UsuarioId = @UsuarioId,
+		UltimaNotificacao = @UltimaNotificacao
 	WHERE Id = @Id
 
 	RETURN 0

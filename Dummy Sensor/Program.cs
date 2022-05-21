@@ -19,7 +19,7 @@ namespace Dummy_Sensor
             while (registrosRestantes > 0)
             {
                 GeraDados();
-                Thread.Sleep(3);
+                Thread.Sleep(10);
             }
         }
 
