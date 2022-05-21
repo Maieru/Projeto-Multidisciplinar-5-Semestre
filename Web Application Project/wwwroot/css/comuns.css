@@ -358,6 +358,7 @@ div.psd-shift {
     background-color: white;
     padding: 40px 40px 40px 40px
 }
+
 .psd-button-logoff {
     background-image: linear-gradient(144deg,#009879, #02edbd 50%,#009879 );
     padding: 5px 15px;
@@ -409,13 +410,16 @@ select {
         outline: 0;
         transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
     }
+
     select:active {
         transition: all 375ms ease-in-out;
     }
+
 option {
     border: 1px solid rgba(0, 152, 121,0.2);
-    border-radius:8px;
+    border-radius: 8px;
 }
+
 .psd-input {
     border: 1px solid #ced4da;
     border-radius: 8px;
@@ -428,6 +432,7 @@ option {
     font-weight: 400;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
+
     .psd-input:focus {
         outline: 0;
         border: 3px solid rgb(0, 152, 121);
@@ -446,7 +451,6 @@ option {
 }
 
 .psd-erro {
-
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -460,6 +464,7 @@ option {
     color: white;
     display: inline;
 }
+
 .wrapper {
     width: 100%;
     height: 100%;
@@ -601,63 +606,83 @@ option {
     0% {
         clip: rect(142px, 350px, 67px, 30px);
     }
+
     5% {
         clip: rect(150px, 350px, 12px, 30px);
     }
+
     10% {
         clip: rect(105px, 350px, 80px, 30px);
     }
+
     15% {
         clip: rect(79px, 350px, 63px, 30px);
     }
+
     20% {
         clip: rect(29px, 350px, 126px, 30px);
     }
+
     25% {
         clip: rect(6px, 350px, 128px, 30px);
     }
+
     30% {
         clip: rect(73px, 350px, 71px, 30px);
     }
+
     35% {
         clip: rect(114px, 350px, 37px, 30px);
     }
+
     40% {
         clip: rect(111px, 350px, 84px, 30px);
     }
+
     45% {
         clip: rect(124px, 350px, 123px, 30px);
     }
+
     50% {
         clip: rect(65px, 350px, 30px, 30px);
     }
+
     55% {
         clip: rect(6px, 350px, 98px, 30px);
     }
+
     60% {
         clip: rect(132px, 350px, 88px, 30px);
     }
+
     65% {
         clip: rect(61px, 350px, 131px, 30px);
     }
+
     70% {
         clip: rect(42px, 350px, 6px, 30px);
     }
+
     75% {
         clip: rect(117px, 350px, 53px, 30px);
     }
+
     80% {
         clip: rect(67px, 350px, 18px, 30px);
     }
+
     85% {
         clip: rect(37px, 350px, 121px, 30px);
     }
+
     90% {
         clip: rect(42px, 350px, 21px, 30px);
     }
+
     95% {
         clip: rect(86px, 350px, 109px, 30px);
     }
+
     100% {
         clip: rect(62px, 350px, 39px, 30px);
     }
@@ -689,4 +714,13 @@ option {
     top: 50%;
     left: -5%;
     right: -5%;
+}
+
+img.logo-mini {
+    width: 300px;
+    margin-top: -10px;
+    margin-bottom: -10px;
+    height: 60px;
+    display: block;
+    z-index: 999;
 }

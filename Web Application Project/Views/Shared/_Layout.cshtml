@@ -9,10 +9,18 @@
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container-fluid">
-            <a class="navbar-brand col-2 offset-1" asp-area="" asp-controller="Home" asp-action="Index">
-                <img src="logo.png" />
-                <span>Project Poseidon</span>
-            </a>
+            @if (usuarioLogado)
+            {
+                <a class="navbar-brand col-2 offset-1" asp-area="" asp-controller="Home" asp-action="Options">
+                    <img class="logo-mini" src="~/img/Project Poseidon.png" />
+                </a>
+            }
+            else
+            {
+                <a class="navbar-brand col-2 offset-1" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img class="logo-mini" src="~/img/Project Poseidon.png" />
+                </a>
+            }
             <div class="psd-shift">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
@@ -45,7 +53,7 @@
                         <img src="data:image/jpeg;base64,@dadosUsuarioLogado.ImagemEmBase64" class="rounded-image icon" />
                     }
                     <span>Olá, @dadosUsuarioLogado.Nome! <a class="psd-button-logoff" href="/Login/Logoff">Fazer Logoff</a></span>
-                    
+
                 }
                 else
                 {
