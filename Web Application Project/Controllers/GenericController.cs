@@ -2,10 +2,12 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 using System.Reflection;
-using Web_Application.DAO;
-using Web_Application.Enum;
-using Web_Application.Models;
+using Negocio.DAO;
+using Negocio.Enum;
+using Negocio.Models;
+using Negocio.Services;
 using Web_Application.Services;
+using Web_Application.Models;
 
 namespace Web_Application.Controllers
 {

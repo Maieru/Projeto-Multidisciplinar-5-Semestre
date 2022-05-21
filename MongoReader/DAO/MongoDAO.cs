@@ -20,7 +20,7 @@ namespace MongoReader.DAO
     {
         private static IMongoCollection<BsonDocument> GetTabelaDispositivo(int idDispositivo)
         {
-            string connectionString = "mongodb://helix:H3l1xNG@" + INSIRA_IP + ":27000/?authSource=admin";
+            string connectionString = "mongodb://helix:H3l1xNG@" + IpConfig.IP + ":27000/?authSource=admin";
             var client = new MongoClient(connectionString);
             var banco = client.GetDatabase("sth_helixiot");
             return banco.GetCollection<BsonDocument>($"sth_/_urn:ngsi-ld:Station:{idDispositivo:000}_Station");

@@ -1,6 +1,6 @@
-﻿using AlertSystem.DAO;
-using AlertSystem.Enum;
-using AlertSystem.Models;
+﻿using Negocio.DAO;
+using Negocio.Enum;
+using Negocio.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +16,7 @@ namespace AlertSystem
         {
             while (true)
             {
+                Console.WriteLine("Fazendo leitura de dados");
                 try
                 {
                     var medicaoDAO = new MedicaoDAO();
@@ -42,12 +43,9 @@ namespace AlertSystem
                             FazGestaoEmail(usuariosCadastras, EnumTipoAlerta.AlertaVermelho, dispositivoDaMedicao);
                     }
                 }
-                catch (Exception erro)
-                {
+                catch (Exception erro) { }
 
-                }
-
-                Thread.Sleep(600);
+                Thread.Sleep(60000);
             }
         }
 

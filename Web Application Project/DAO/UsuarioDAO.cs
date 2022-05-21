@@ -2,9 +2,10 @@
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
 using System.Linq;
+using Negocio.Models;
 using Web_Application.Models;
 
-namespace Web_Application.DAO
+namespace Negocio.DAO
 {
     public class UsuarioDAO : GenericDAO<UsuarioViewModel>
     {

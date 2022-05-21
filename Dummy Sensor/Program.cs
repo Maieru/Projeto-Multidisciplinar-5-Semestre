@@ -1,5 +1,5 @@
-﻿using Dummy_Sensor.DAO;
-using Dummy_Sensor.Models;
+﻿using Negocio.DAO;
+using Negocio.Models;
 using System;
 using System.Threading;
 

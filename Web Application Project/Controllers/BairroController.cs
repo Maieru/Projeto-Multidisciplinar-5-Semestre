@@ -5,10 +5,10 @@ using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
-using Web_Application.DAO;
-using Web_Application.Enum;
-using Web_Application.Models;
-using Web_Application.Services;
+using Negocio.DAO;
+using Negocio.Enum;
+using Negocio.Models;
+using Negocio.Services;
 
 namespace Web_Application.Controllers
 {
