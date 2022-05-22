@@ -36,20 +36,24 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 /* Bytes que serão salvos na E2PROM */
 #define BYTES_E2PROM 100
 
+/* número de max de tentativas para o Wi-FI e MQTT */
+#define MAX_TENTATIVAS_WIFI  20
+#define MAX_TENTATIVAS_MQTT 10
+
 /* mnemônicos dos menus */
 char* Menu_Principal[] = { "Wi-Fi", "MQTT", "Volta" };
 char* Menu_WIFI[] = { "SSID", "Senha", "Volta" };
 char* Menu_MQTT[] = { "ID DISPOSITIVO", "IP SERVIDOR", "Volta" };
 
 /* variáveis que vão para a E2PROM */
-char  SSID_ID[20] = "aaaaaaaaaaaaaaaaaaa";
-char  SSID_PASSWORD[20] = "aaaaaaaaaaaaaaaaaaa";
-char  MQTT_ID[20] = "aaaaaaaaaaaaaaaaaaa";
-char  MQTT_IP[20] = "1111111111111111111";
+char  SSID_ID[20] = "                   ";
+char  SSID_PASSWORD[20] = "                   ";
+char  MQTT_ID[20] = "                   ";
+char  MQTT_IP[20] = "                   ";
 
 /* Configuração do MQTT */
-const char* SSID = "HELIX_POSEIDON"; // SSID / nome da rede WI-FI que deseja se conectar
-const char* PASSWORD = "Pax2019+"; // Senha da rede WI-FI que deseja se conectar
+const char* SSID = ""; // SSID / nome da rede WI-FI que deseja se conectar
+const char* PASSWORD = ""; // Senha da rede WI-FI que deseja se conectar
   
 const char* BROKER_MQTT = "35.198.25.224"; //URL do broker MQTT que se deseja utilizar
 int BROKER_PORT = 1883; // Porta do Broker MQTT
@@ -66,6 +70,11 @@ float nivel = 0;
 /* variáveis de swap para guarda a conversão do float para ascii */
 char msgBuffer[5];
 char msgBuffer1[5];
+
+/* variáveis para debug do dispositivo */
+char B_ErroDisplay = 0;
+char B_ErroWIFI = 0;
+char B_ErroMQTT = 0;
   
 /* Prototypes */
 void initSerial();
@@ -78,11 +87,13 @@ void InitOutput(void);
 
 void setup()
 {
-  /* Serial.begin(9600); */
+  Serial.begin(9600);
+  
   if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) 
   { /* Address 0x3D for 128x64 */
     Serial.println(F("SSD1306 allocation failed"));
-    for(;;);
+    /* for(;;); */
+    B_ErroDisplay = 1;
   }
   
   display.clearDisplay();
@@ -110,14 +121,24 @@ void loop()
   
   /* envia o status de todos os outputs para o Broker no protocolo esperado
   EnviaEstadoOutputMQTT(); */
+
+  if (B_ErroWIFI)
+    Serial.println("Não foi possível conectar no Wi-Fi");
+  if (B_ErroDisplay)
+    Serial.println("Não foi possível se comunicar com o OLED");
   
-  Serial.println(voltage);
+  /* Serial.println(voltage); */
   MQTT.publish(TOPICO_PUBLISH_NIVEL, dtostrf(nivel, 5, 0, msgBuffer1));
   MQTT.publish(TOPICO_PUBLISH_CHUVA, dtostrf(voltage, 5, 1, msgBuffer));
+
+  Serial.println("Dados enviados ao broker | Distancia: " + String(voltage) + "cm - Nível:" + String(nivel) + "mm");
   
   MQTT.loop(); /* keep-alive da comunicação com broker MQTT */
-  voltage += 0.5;
-  nivel++;
+
+  voltage = (float)random(300);
+  nivel = (float)random(80);
+  /*voltage += 0.5;
+  nivel++;*/
   
   delay(500);
   
@@ -276,7 +297,8 @@ void EntradaTexto(char* texto)
 
   while(1)
   {
-    tecla = TeclaPressionada();
+    /* tecla = TeclaPressionada(); */
+    tecla = QualTecla();
     if (tecla == INFERIOR)
     {
       *(texto+indice) = *(texto+indice) + 1;
@@ -292,15 +314,17 @@ void EntradaTexto(char* texto)
       *(texto+indice) = ' ';
       indicador[indice] = ' ';
       indice--;
-      indicador[indice] = '*';
       if (indice == 255)
         indice = 0;
+      indicador[indice] = '*';
     }
     else
     if (tecla == ENTER)
     {
       indicador[indice] = ' ';
       indice++;
+      if (indice == 19)
+        indice = 18;
       indicador[indice] = '*';
     }
     else
@@ -312,7 +336,7 @@ void EntradaTexto(char* texto)
     display.setCursor(0, 20);
     display.clearDisplay();
     display.println(MontaString(texto));
-    if (pisca & 1)
+    if (pisca & 0x07) /* faz piscar mais lentamente */
       display.println(MontaString(indicador));
     display.display();
 
@@ -409,6 +433,7 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length)
 //Retorno: nenhum
 void reconnectMQTT() 
 {
+    char num_tentativas = 0;
     while (!MQTT.connected()) 
     {
         Serial.print("* Tentando se conectar ao Broker MQTT: ");
@@ -422,6 +447,12 @@ void reconnectMQTT()
         {
             Serial.println("Falha ao reconectar no broker.");
             Serial.println("Havera nova tentatica de conexao em 2s");
+            if (num_tentativas == MAX_TENTATIVAS_MQTT)
+            {
+              B_ErroMQTT = 1;
+              return;
+            }
+            num_tentativas++;
             delay(2000);
         }
     }
@@ -432,17 +463,32 @@ void reconnectMQTT()
 //Retorno: nenhum
 void reconectWiFi() 
 {
-    //se já está conectado a rede WI-FI, nada é feito. 
-    //Caso contrário, são efetuadas tentativas de conexão
+    char num_tentativas = 0;
+    B_ErroWIFI = 0; /* para cada nova chamada da função, assume que não há erro */
+
+  /*
+    String _ssid = MontaString(SSID_ID);
+    String _password = MontaString(SSID_PASSWORD);
+    _ssid = _ssid.trim();
+    _password = _password.trim();*/
+    
+    /* se já está conectado a rede WI-FI, nada é feito. 
+      Caso contrário, são efetuadas tentativas de conexão */
     if (WiFi.status() == WL_CONNECTED)
         return;
          
     WiFi.begin(SSID, PASSWORD); // Conecta na rede WI-FI
-     
+     /*WiFi.begin(_ssid, _password);*/ // Conecta na rede WI-FI
     while (WiFi.status() != WL_CONNECTED) 
     {
         delay(100);
         Serial.print(".");
+        if (num_tentativas == MAX_TENTATIVAS_WIFI)
+        {
+          B_ErroWIFI = 1;
+          return;
+        }
+        num_tentativas++;
     }
    
     Serial.println();
