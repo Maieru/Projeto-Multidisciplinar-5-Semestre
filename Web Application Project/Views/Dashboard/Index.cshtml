@@ -3,6 +3,7 @@
     var bairrosDisponiveis = ViewBag.Bairros as List<SelectListItem>;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<link href="~/css/dashboard.css" rel="stylesheet" />
 
 <div class="row">
     <span class="form-label">Dispositivo de Referência:</span>
@@ -15,7 +16,14 @@
     <div id="dailyRainValueDeviceChart" class="psd-grafico" style="margin-left: 9%; margin-top: 32px"></div>
 </div>
 
+<div class="row">
+    <div id="map"></div>
+</div>
+
 @section Scripts {
-<script src="~/lib/canvasjs/canvasjs.min.js"></script>
-<script src="~/js/dashboardMain.js"></script>
+    <script src="~/lib/canvasjs/canvasjs.min.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=@(APIKeys.GOOGLE_API_KEY)&callback=initMap&v=weekly" defer></script>
+
+    <script src="~/js/dashboardMain.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 }

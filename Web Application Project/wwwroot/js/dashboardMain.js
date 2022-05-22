@@ -2,6 +2,7 @@
     setInterval(function () {
         AtualizaGraficos()
     }, 10000)
+    window.initMap = initMap;
 })
 
 function AtualizaGraficos() {
@@ -9,6 +10,7 @@ function AtualizaGraficos() {
     AtualizaGraficoNivelDiaADiaDispositivo();
     AtualizaGraficoValorDeChuvaHoraAHoraDispositivo();
     AtualizaGraficoValorDeChuvaDiaADiaDispositivo();
+    AtualizaDadosMapa();
 }
 function AtualizaGraficoNivelHoraAHoraDispositivo() {
     var dispositivoSelecionado = $('#dispositivoReferencia').val();
@@ -19,7 +21,7 @@ function AtualizaGraficoNivelHoraAHoraDispositivo() {
         success: function (dados) {
 
             var dataPoints = [];
-            
+
 
             var result = dados;
 
@@ -29,7 +31,7 @@ function AtualizaGraficoNivelHoraAHoraDispositivo() {
 
             var chart = new CanvasJS.Chart("hourlyWaterLevelDeviceChart", {
                 backgroundColor: "#ffffff",
-                theme:"light2",
+                theme: "light2",
                 animationEnabled: false,
                 zoomEnabled: false,
 
@@ -44,13 +46,13 @@ function AtualizaGraficoNivelHoraAHoraDispositivo() {
                 axisY: {
                     title: "Valor de Nível",
                     suffix: "mm",
-                    
-                    
+
+
                 },
                 axisX: {
                     title: "Horário",
                     suffix: "h",
-                    
+
                 },
                 data: [
                     {
@@ -218,4 +220,34 @@ function AtualizaGraficoValorDeChuvaDiaADiaDispositivo() {
             chart.render();
         }
     })
+}
+
+function initMap() {
+    $.ajax({
+        url: "/api/GetMapData",
+        success: function (dados) {
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 4,
+                center: { lat: -14.235004, lng: -51.92528 },
+                mapTypeId: "terrain",
+            });
+
+            if (dados != undefined) {
+                for (const bairro in dados) {
+                    // Add the circle for this city to the map.
+                    const bairroCircle = new google.maps.Circle({
+                        strokeColor: "#FF0000",
+                        strokeOpacity: 0.8,
+                        strokeWeight: 2,
+                        fillColor: "#FF0000",
+                        fillOpacity: 0.35,
+                        map,
+                        center: dados[bairro].center,
+                        radius: Math.sqrt(dados[bairro].valorNivel) * 1000,
+                    });
+                }
+            }
+        }
+    })
+
 }

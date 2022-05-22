@@ -76,3 +76,20 @@ BEGIN
 		  CEP LIKE CONCAT('%', ISNULL(@CEP, ''), '%') 
 END
 GO
+
+CREATE PROCEDURE spGetLatestMesureFromBairros
+AS
+BEGIN
+	SELECT b.*,
+	   (SELECT TOP 1 m.ValorChuva
+		FROM tbMedicao m
+		INNER JOIN tbDispositivos d on D.Id = m.DispositivoId
+		WHERE d.BairroID = b.Id
+		ORDER BY m.DataMedicao DESC) [ValorChuva],
+		(SELECT TOP 1 m.ValorNivel
+		FROM tbMedicao m
+		INNER JOIN tbDispositivos d on D.Id = m.DispositivoId
+		WHERE d.BairroID = b.Id
+		ORDER BY m.DataMedicao DESC) [ValorNivel]
+	FROM tbBairros b
+END

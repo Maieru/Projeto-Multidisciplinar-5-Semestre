@@ -177,6 +177,37 @@ namespace Web_Application.Controllers
             }
         }
 
+        [HttpGet("api/GetMapData")]
+        public IActionResult GetMapData()
+        {
+            try
+            {
+                var bairroDAO = new BairroDAO();
+                var listaMedicoesPorBairro = bairroDAO.GetLatestMeasures();
+
+                var mapData = listaMedicoesPorBairro.Select(m => new
+                {
+                    descricao = m.Descricao,
+                    center = new
+                    {
+                        lat = m.Latitude,
+                        lng = m.Longitude
+                    },
+                    valorNivel = m.ValorNivel
+                }).ToList();
+
+                return Json(mapData);
+            }
+            catch (Exception erro)
+            {
+
+                LogService.GeraLogErro(erro,
+                                       controller: GetType().Name,
+                                       action: MethodInfo.GetCurrentMethod()?.Name);
+
+                return null;
+            }
+        }
         private List<MedicaoHoraViewModel> GetLastDayMesures(int idDispositivo)
         {
             var medicaoDAO = new MedicaoDAO();

@@ -28,5 +28,39 @@ namespace Negocio.DAO
 
             return lista;
         }
+
+        public List<BairroMedicaoViewModel> GetLatestMeasures()
+        {
+            var procedureName = "spGetLatestMesureFromBairros";
+            var tabela = HelperDAO.ExecutaProcSelect(procedureName, null);
+
+            var lista = new List<BairroMedicaoViewModel>();
+
+            foreach (DataRow registro in tabela.Rows)
+            {
+                var bairroMedicao = new BairroMedicaoViewModel();
+
+
+                bairroMedicao.Id = Convert.ToInt32(registro["Id"]);
+                bairroMedicao.CEP = registro["CEP"].ToString();
+                bairroMedicao.Descricao = registro["Descricao"].ToString();
+                bairroMedicao.Latitude = Convert.ToDouble(registro["Latitude"]);
+                bairroMedicao.Longitude = Convert.ToDouble(registro["Longitude"]);
+
+                if (registro["ValorChuva"] == DBNull.Value)
+                    bairroMedicao.ValorChuva = 0;
+                else
+                    bairroMedicao.ValorChuva = Convert.ToDouble(registro["ValorChuva"]);
+
+                if (registro["ValorNivel"] == DBNull.Value)
+                    bairroMedicao.ValorNivel = 0;
+                else
+                    bairroMedicao.ValorNivel = Convert.ToDouble(registro["ValorNivel"]);
+
+                lista.Add(bairroMedicao);
+            }
+
+            return lista;
+        }
     }
 }

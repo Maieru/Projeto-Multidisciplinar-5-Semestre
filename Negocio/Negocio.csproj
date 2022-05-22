@@ -90,6 +90,7 @@
     <Compile Include="Enum\EnumTipoAlerta.cs" />
     <Compile Include="Enum\EnumTipoLog.cs" />
     <Compile Include="Enum\EnumTipoUsuario.cs" />
+    <Compile Include="Models\BairroMedicaoViewModel.cs" />
     <Compile Include="Models\BairroViewModel.cs" />
     <Compile Include="Models\BaseDatabaseModel.cs" />
     <Compile Include="Models\DispositivoViewModel.cs" />
