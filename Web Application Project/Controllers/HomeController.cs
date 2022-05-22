@@ -22,6 +22,30 @@ namespace Web_Application.Controllers
 
         public IActionResult Index() => View();
 
+        public IActionResult About()
+        {
+            try
+            {
+                var usuarioEmCache = SessionService.RecuperaCache<UsuarioViewModel>(HttpContext, ConstantesComuns.USUARIO_SESSAO);
+
+                if (usuarioEmCache == null)
+                    return RedirectToAction("Index", "Login");
+
+                if (usuarioEmCache != null)
+                    ViewBag.Usuario = usuarioEmCache;
+
+                return View();
+            }
+            catch (Exception erro)
+            {
+                LogService.GeraLogErro(erro,
+                                       controller: GetType().Name,
+                                       action: MethodInfo.GetCurrentMethod()?.Name);
+
+                return View("Error", new ErrorViewModel(erro.ToString()));
+            }
+        }
+
         public IActionResult Options()
         {
             try

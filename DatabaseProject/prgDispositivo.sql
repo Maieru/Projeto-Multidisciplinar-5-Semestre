@@ -142,3 +142,6 @@ BEGIN
 	SELECT * FROM #tempMedicoes
 END
 GO
+
+CREATE NONCLUSTERED INDEX IX_DISPOSITIVO_BAIRROID   
+    ON tbDispositivos (bairroId);

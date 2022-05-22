@@ -1,0 +1,19 @@
+﻿@{
+    var dadosUsuario = ViewBag.Usuario;
+    var usuarioLogado = dadosUsuario != null;
+    UsuarioViewModel dadosUsuarioLogado = ViewBag.Usuario as UsuarioViewModel;
+    var idUsuario = dadosUsuarioLogado?.Id;
+}
+
+<div class="col-4 offset-4 text-center">
+    <h1>
+        Integrantes
+    </h1>
+    <p>
+        Alexsander Vilaça Rodrigues - 081200032<br />
+        Daniel Oliveira Dias - 081200022<br />
+        João Victor Maieru Teixeira - 081200025<br />
+        Kauan Moreira Bortoloto - 081200048<br />
+        Marcus Augusto Casé Nutti - 081200027<br />
+    </p>
+</div>

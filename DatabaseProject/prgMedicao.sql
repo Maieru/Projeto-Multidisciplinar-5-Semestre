@@ -174,7 +174,7 @@ BEGIN
 			SET @medicaoValida = 0
 		END
 
-		IF @ValorChuva > (SELECT TOP 10 AVG(ValorChuva) FROM tbMedicao WHERE DispositivoId = @DispositivoId) * 2
+		IF @ValorChuva > (SELECT TOP 10 AVG(ValorChuva) FROM tbMedicao WHERE DispositivoId = @DispositivoId) * 2 + 5 
 		BEGIN
 			INSERT INTO tbMedicoesSuspeitas(DispositivoId, DataMedicao, ValorChuva, ValorNivel, Detalhes)
 				VALUES (@DispositivoId, @DataMedicao, @ValorChuva, @ValorNivel, 'Adicionado porque o valor da chuva era muito superior a média dos ultimos 10 registros')
