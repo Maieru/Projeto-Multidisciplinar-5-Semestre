@@ -10,7 +10,6 @@ function AtualizaGraficos() {
     AtualizaGraficoNivelDiaADiaDispositivo();
     AtualizaGraficoValorDeChuvaHoraAHoraDispositivo();
     AtualizaGraficoValorDeChuvaDiaADiaDispositivo();
-    AtualizaDadosMapa();
 }
 function AtualizaGraficoNivelHoraAHoraDispositivo() {
     var dispositivoSelecionado = $('#dispositivoReferencia').val();
@@ -244,6 +243,24 @@ function initMap() {
                         map,
                         center: dados[bairro].center,
                         radius: Math.sqrt(dados[bairro].valorNivel) * 1000,
+                    });
+
+                    const marker = new google.maps.Marker({
+                        position: dados[bairro].center,
+                        map,
+                        title: dados[bairro].descricao,
+                    });
+
+                    const infowindow = new google.maps.InfoWindow({
+                        content: `<h1><strong>${dados[bairro].descricao}</strong></h1>Nivel Atual: ${dados[bairro].valorNivel.toFixed(3)} mm <br/> Qtd.Chuva: ${dados[bairro].valorChuva.toFixed(3)} mm`,
+                    });
+
+                    marker.addListener("click", () => {
+                        infowindow.open({
+                            anchor: marker,
+                            map,
+                            shouldFocus: false,
+                        });
                     });
                 }
             }

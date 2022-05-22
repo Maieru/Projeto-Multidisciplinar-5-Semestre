@@ -193,7 +193,8 @@ namespace Web_Application.Controllers
                         lat = m.Latitude,
                         lng = m.Longitude
                     },
-                    valorNivel = m.ValorNivel
+                    valorNivel = m.ValorNivel,
+                    valorChuva = m.ValorChuva
                 }).ToList();
 
                 return Json(mapData);
