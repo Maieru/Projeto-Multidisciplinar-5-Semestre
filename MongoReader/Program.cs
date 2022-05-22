@@ -2,13 +2,13 @@
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using MongoReader.DAO;
-using MongoReader.Models;
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading;
-using MongoReader.DAO;
 using System.Globalization;
+using Negocio.DAO;
+using Negocio.Models;
 
 namespace MongoReader
 {
@@ -21,6 +21,7 @@ namespace MongoReader
 
             while (true)
             {
+                Console.WriteLine("Fazendo leitura dos dados...");
                 try
                 {
                     if (listaDispositivoCache == null || DateTime.Now.Subtract(ultimaAtualizacaoDaLista).Minutes > 5)
@@ -30,7 +31,7 @@ namespace MongoReader
                         ultimaAtualizacaoDaLista = DateTime.Now;
                     }
 
-                    foreach(var dispositivo in listaDispositivoCache)
+                    foreach (var dispositivo in listaDispositivoCache)
                     {
                         var ultimasMedicoes = MongoDAO.GetMedicoesUltimoMinuto(dispositivo.Id);
                         var medicaoDAO = new MedicaoDAO();
@@ -44,10 +45,7 @@ namespace MongoReader
                         }
                     }
                 }
-                catch (Exception erro)
-                {
-
-                }
+                catch (Exception erro) { } 
 
                 Thread.Sleep(60000);
             }

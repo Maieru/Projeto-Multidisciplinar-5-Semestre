@@ -187,6 +187,12 @@ BEGIN
 			INSERT INTO tbMedicao(DispositivoId, DataMedicao, ValorChuva, ValorNivel)
 				VALUES (@DispositivoId, @DataMedicao, @ValorChuva, @ValorNivel)
 		END
+
+		FETCH NEXT FROM cursorMedicoes
+			INTO @DispositivoId, @DataMedicao, @ValorChuva, @ValorNivel
 	END
+
+	CLOSE cursorMedicoes
+	DEALLOCATE cursorMedicoes
 END
 GO

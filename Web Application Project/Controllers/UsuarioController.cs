@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.IO;
 using System.Reflection;
-using Web_Application.DAO;
-using Web_Application.Enum;
+using Negocio.DAO;
+using Negocio.Enum;
+using Negocio.Models;
+using Negocio.Services;
 using Web_Application.Models;
-using Web_Application.Services;
 
 namespace Web_Application.Controllers
 {

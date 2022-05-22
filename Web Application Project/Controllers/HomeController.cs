@@ -3,9 +3,11 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
 using System.Reflection;
-using Web_Application.DAO;
-using Web_Application.Models;
+using Negocio.DAO;
+using Negocio.Models;
+using Negocio.Services;
 using Web_Application.Services;
+using Web_Application.Models;
 
 namespace Web_Application.Controllers
 {

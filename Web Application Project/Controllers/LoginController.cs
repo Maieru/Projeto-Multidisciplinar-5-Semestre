@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Reflection;
-using Web_Application.Models;
+using Negocio.Models;
+using Negocio.Services;
+using Negocio.DAO;
 using Web_Application.Services;
-using Web_Application.DAO;
+using Web_Application.Models;
 
 namespace Web_Application.Controllers
 {

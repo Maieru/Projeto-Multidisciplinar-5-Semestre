@@ -100,3 +100,45 @@ BEGIN
 		  NomeBairro LIKE CONCAT('%', ISNULL(@NomeBairro, ''), '%') 
 END
 GO
+
+CREATE PROCEDURE spGetLatestMedicao
+AS
+BEGIN
+	CREATE TABLE #tempMedicoes
+	(
+		Id				INT,
+		DispositivoId	INT,
+		DataMedicao		DATETIME,
+		ValorChuva		FLOAT,
+		ValorNivel		FLOAT
+	)
+
+	DECLARE @dispositivoId INT
+	
+	DECLARE cursorDispositivo CURSOR STATIC FORWARD_ONLY FOR
+		SELECT Id
+		FROM tbDispositivos
+
+	OPEN cursorDispositivo
+
+	FETCH NEXT FROM cursorDispositivo
+		INTO @DispositivoId
+
+	WHILE(@@FETCH_STATUS = 0)
+	BEGIN
+		INSERT INTO #tempMedicoes
+		SELECT TOP 1 *
+		FROM tbMedicao
+		WHERE DispositivoId = @DispositivoId AND ValorNivel IS NOT NULL
+		ORDER BY DataMedicao DESC
+
+		FETCH NEXT FROM cursorDispositivo
+			INTO @DispositivoId
+	END
+
+	CLOSE cursorDispositivo
+	DEALLOCATE cursorDispositivo
+
+	SELECT * FROM #tempMedicoes
+END
+GO

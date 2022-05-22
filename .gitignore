@@ -363,3 +363,5 @@ MigrationBackup/
 FodyWeavers.xsd
 
 /Web Application Project/APIKeys.cs
+/AlertSystem/EmailCredentials.cs
+/MongoReader/IpConfig.cs

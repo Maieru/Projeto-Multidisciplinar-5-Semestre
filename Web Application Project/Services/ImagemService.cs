@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.IO;
 
-namespace Web_Application.Services
+namespace Negocio.Services
 {
     public static class ImagemService
     {

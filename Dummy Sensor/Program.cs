@@ -1,5 +1,5 @@
-﻿using Dummy_Sensor.DAO;
-using Dummy_Sensor.Models;
+﻿using Negocio.DAO;
+using Negocio.Models;
 using System;
 using System.Threading;
 
@@ -19,7 +19,7 @@ namespace Dummy_Sensor
             while (registrosRestantes > 0)
             {
                 GeraDados();
-                Thread.Sleep(3);
+                Thread.Sleep(10);
             }
         }
 
