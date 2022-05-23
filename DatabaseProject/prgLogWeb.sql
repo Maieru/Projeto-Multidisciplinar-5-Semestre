@@ -70,4 +70,5 @@ END
 GO
 
 CREATE NONCLUSTERED INDEX IX_DATALOG_LOGWEB
-    ON tbLogWeb (DataGeracao);  
+    ON tbLogWeb (DataGeracao);
+GO

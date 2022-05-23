@@ -93,3 +93,4 @@ BEGIN
 		ORDER BY m.DataMedicao DESC) [ValorNivel]
 	FROM tbBairros b
 END
+GO
