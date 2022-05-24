@@ -21,8 +21,8 @@
         @foreach (var usuario in Model)
         {
             <tr>
-                <td>
-                    <a href="Usuario/Edit?id=@usuario.Id" class="btn psd-button psd-button-info">Editar</a>
+                <td> 
+                    <a href="Usuario/Edit?id=@usuario.Id" class="btn psd-button psd-button-info col-5">Editar</a>
                     <button class="btn psd-button psd-button-danger col-5" onclick="javascrpit:DeleteConfirmation('Usuario', @usuario.Id)">Apagar</button>
                 </td>
                 <td>

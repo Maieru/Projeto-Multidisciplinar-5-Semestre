@@ -31,16 +31,19 @@ namespace AlertSystem
                     foreach (var medicao in listaDeUltimasMedicoes)
                     {
                         var dispositivoDaMedicao = listaDispositivos.Where(d => d.Id == medicao.DispositivoId).FirstOrDefault();
-                        var porcentagemCheia = medicao.ValorNivel / dispositivoDaMedicao.MedicaoReferencia;
+                        if (dispositivoDaMedicao != null)
+                        {
+                            var porcentagemCheia = medicao.ValorNivel / dispositivoDaMedicao.MedicaoReferencia;
 
-                        if (porcentagemCheia > 0.25 && porcentagemCheia < 0.5)
-                            FazGestaoEmail(usuariosCadastras, EnumTipoAlerta.AlertaAzul, dispositivoDaMedicao);
-                        else if (porcentagemCheia < 0.75)
-                            FazGestaoEmail(usuariosCadastras, EnumTipoAlerta.AlertaAmarelo, dispositivoDaMedicao);
-                        else if (porcentagemCheia < 0.9)
-                            FazGestaoEmail(usuariosCadastras, EnumTipoAlerta.AlertaLaranja, dispositivoDaMedicao);
-                        else if (porcentagemCheia < 1)
-                            FazGestaoEmail(usuariosCadastras, EnumTipoAlerta.AlertaVermelho, dispositivoDaMedicao);
+                            if (porcentagemCheia > 0.25 && porcentagemCheia < 0.5)
+                                FazGestaoEmail(usuariosCadastras, EnumTipoAlerta.AlertaAzul, dispositivoDaMedicao);
+                            else if (porcentagemCheia < 0.75)
+                                FazGestaoEmail(usuariosCadastras, EnumTipoAlerta.AlertaAmarelo, dispositivoDaMedicao);
+                            else if (porcentagemCheia < 0.9)
+                                FazGestaoEmail(usuariosCadastras, EnumTipoAlerta.AlertaLaranja, dispositivoDaMedicao);
+                            else if (porcentagemCheia < 1)
+                                FazGestaoEmail(usuariosCadastras, EnumTipoAlerta.AlertaVermelho, dispositivoDaMedicao);
+                        }
                     }
                 }
                 catch (Exception erro) { }
